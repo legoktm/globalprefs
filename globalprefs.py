@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from __future__ import unicode_literals
 import json
 from flask import Flask, request, url_for
 from flask_mwoauth import MWOAuth
@@ -66,7 +66,10 @@ def index():
     t += 'Language: <select name="lang" id="lang-select">\n'
     languages = get_languages()
     for lang in languages:
-        t += '\t<option value="{0}">{1}</option>\n'.format(lang, languages[lang])
+        try:
+            t += '<option value="{0}">{1}</option>\n'.format(lang.decode('utf-8','ignore'), languages[lang].decode('utf-8','ignore'))
+        except UnicodeEncodeError:
+            pass  # Ahhhhhhhhhhh
     t += '</select>\n'
     t += '<br />'
     t += '<button name="go" id="button-go">Go!</button>'
