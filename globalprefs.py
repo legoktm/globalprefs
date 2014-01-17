@@ -47,7 +47,7 @@ def get_attached_wikis(username):
 
 @app.route('/api/')
 def api():
-    wiki = request.args['wiki'].replace('http:', 'https://') + '/w'
+    wiki = request.args['wiki'].replace('http:', 'https:') + '/w'
     value = request.args['value']
     token = mwoauth.request({'action': 'tokens', 'type': 'options'}, wiki)['tokens']['optionstoken']
     d = mwoauth.request({'action': 'options', 'token': token, 'change': 'language={0}'.format(value)}, wiki)
