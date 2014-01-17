@@ -2,7 +2,7 @@ $('#button-go').on('click', function(e){
 	var lang, data, $log;
 	e.preventDefault();
 	lang = $('#lang-select').val();
-	data = JSON.parse($('#attached-wikis').val());
+	data = JSON.parse($('#attached-wikis').text());
 	$log = $('#logging');
 	$.each(data.wikis, function(index, value){
 		$.ajax({
