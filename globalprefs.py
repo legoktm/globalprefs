@@ -66,7 +66,8 @@ def index():
     t += '\n<br />\n'
     t += 'Language: <select name="lang" id="lang-select">\n'
     languages = get_languages()
-    for lang in languages:
+    codes = sorted(list(languages))
+    for lang in codes:
         try:
             t += '<option value="{0}">{1}</option>\n'.format(lang.decode('utf-8','ignore'), languages[lang].decode('utf-8','ignore'))
         except UnicodeEncodeError:
