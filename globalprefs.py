@@ -33,6 +33,8 @@ def get_languages():
 
 
 def get_attached_wikis(username):
+    if 'debug' in request.args:
+        return ['http://www.mediawiki.org']
     #meta=globaluserinfo&guiuser=Catrope&guiprop=merged&format=jsonfm
     wikis = mwoauth.request({
         'action': 'query',
@@ -40,11 +42,10 @@ def get_attached_wikis(username):
         'guiuser': username,
         'guiprop': 'merged'
     })  # Shouldn't matter what wiki this request runs on
-    for wiki in wikis['query']['globaluserinfo']['merged']:
-        yield wiki['url']
+    return [wiki['url'] for wiki in wikis['query']['globaluserinfo']['merged']]
 
 
-@app.route('/api')
+@app.route('/api/')
 def api():
     wiki = request.args['wiki'].replace('http:', 'https://') + '/w'
     value = request.args['value']
