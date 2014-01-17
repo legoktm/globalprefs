@@ -55,7 +55,7 @@ def api():
 
 @app.route('/')
 def index():
-    t = ''
+    t = '<html><head><title>Global preferences</title></head><body>'
     username = mwoauth.get_current_user(False)
     if username:
         t += 'You are currently logged in as {0}. <a href="logout">Logout</a>'.format(username)
@@ -80,6 +80,7 @@ def index():
     t += '<script src="//tools.wmflabs.org/static/js/jquery-2.0.3.min.js">'
     link = url_for('static', filename='js.js')
     t += '<script src="{0}">'.format(link)
+    t += '</body></html>'
 
     return t
 
