@@ -79,7 +79,7 @@ def index():
     # Embed some JSON...
     wikis = {'wikis': list(get_attached_wikis(username))}
     t += embed_json('attached-wikis', wikis)
-    t += '<script type="text/javascript" src="//tools.wmflabs.org/static/js/jquery-2.0.3.min.js"></script>'
+    t += '<script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.0.3/jquery.min.js"></script>'
     link = url_for('static', filename='js.js')
     t += '<script type="text/javascript" src="{0}"></script>'.format(link)
     t += '</body></html>'
