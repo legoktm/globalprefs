@@ -19,14 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import json
 from flask import Flask, request, url_for
 from flask_mwoauth import MWOAuth
-from werkzeug.contrib.cache import FileSystemCache
 
 import config
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
-
-cache = FileSystemCache('cache')
 
 mwoauth = MWOAuth(consumer_key=config.oauth_key, consumer_secret=config.oauth_secret)
 app.register_blueprint(mwoauth.bp)
@@ -38,13 +35,10 @@ def embed_json(name, data):
 
 
 def get_languages():
-    languages = cache.get('languages')
-    if languages is None:
-        data = mwoauth.request({'action': 'query', 'meta': 'siteinfo', 'siprop': 'languages'})
-        languages = {}
-        for lang in data['query']['languages']:
-            languages[lang['code']] = lang['*']
-            cache.set('languages', languages)
+    data = mwoauth.request({'action': 'query', 'meta': 'siteinfo', 'siprop': 'languages'})
+    languages = {}
+    for lang in data['query']['languages']:
+        languages[lang['code']] = lang['*']
     return languages
 
 
