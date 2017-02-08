@@ -78,10 +78,7 @@ def index():
     languages = get_languages()
     codes = sorted(list(languages))
     for lang in codes:
-        try:
-            t += '<option value="{0}">{1}</option>\n'.format(lang.decode('utf-8','ignore'), languages[lang].decode('utf-8','ignore'))
-        except UnicodeEncodeError:
-            pass  # Ahhhhhhhhhhh
+        t += '<option value="{0}">{1}</option>\n'.format(lang, languages[lang])
     t += '</select>\n'
     t += '<br />'
     t += '<button name="go" id="button-go">Go!</button>'
