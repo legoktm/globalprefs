@@ -17,7 +17,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import json
-from flask import Flask, request, url_for
+from flask import Flask, request, render_template
 from flask_mwoauth import MWOAuth
 
 import config
@@ -27,11 +27,6 @@ app.secret_key = config.secret_key
 
 mwoauth = MWOAuth(consumer_key=config.oauth_key, consumer_secret=config.oauth_secret)
 app.register_blueprint(mwoauth.bp)
-
-
-def embed_json(name, data):
-    # https://stackoverflow.com/questions/9320427/best-practice-for-embedding-arbitrary-json-in-the-dom
-    return '<script type="application/json" id="{0}">{1}</script>'.format(name, json.dumps(data))
 
 
 def get_languages():
@@ -66,32 +61,17 @@ def api():
 
 @app.route('/')
 def index():
-    t = '<html><head><title>Global preferences</title></head><body>'
     username = mwoauth.get_current_user(False)
-    if username:
-        t += 'You are currently logged in as {0}. <a href="logout">Logout</a>'.format(username)
-    else:
-        t += 'You are not logged in. <a href="login">Login</a>.'
-        return t
-    t += '\n<br />\n'
-    t += 'Language: <select name="lang" id="lang-select">\n'
+    if not username:
+        return render_template('login.html')
     languages = get_languages()
     codes = sorted(list(languages))
-    for lang in codes:
-        t += '<option value="{0}">{1}</option>\n'.format(lang, languages[lang])
-    t += '</select>\n'
-    t += '<br />'
-    t += '<button name="go" id="button-go">Go!</button>'
-    t += '<div id="logging"></div>'
-    # Embed some JSON...
     wikis = {'wikis': list(get_attached_wikis(username))}
-    t += embed_json('attached-wikis', wikis)
-    t += '<script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.0.3/jquery.min.js"></script>'
-    link = url_for('static', filename='js.js')
-    t += '<script type="text/javascript" src="{0}"></script>'.format(link)
-    t += '</body></html>'
 
-    return t
+    return render_template(
+        'main.html', username=username, codes=codes,
+        languages=languages, wikis=wikis
+    )
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Global preferences</title>
+</head>
+<body>
+    <p>You are currently logged in as {{ username }}. <a href="logout">Logout</a>.</p>
+    Language: <select name="lang" id="lang-select">
+        {% for lang in codes %}
+        <option value="{{ lang }}">{{ languages[lang] }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    <button name="go" id="button-go">Go!</button>
+    <div id="logging"></div>
+    <script type="application/json" id="attached-wikis">{{ wikis|tojson|safe }}</script>
+    <script type="text/javascript" src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js.js') }}"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ $('#button-go').on('click', function(e){
 	$log = $('#logging');
 	$.each(data.wikis, function(index, value){
 		$.ajax({
+			// FIXME: Don't hardcode URL
 			url: location.protocol + '//tools.wmflabs.org/globalprefs/api/',
 			dataType: 'json',
 			async: false,
